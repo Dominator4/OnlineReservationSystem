@@ -10,6 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using AuthenticationService.Services; // Upewnij się, że ta przestrzeń nazw odpowiada lokalizacji Twojego AuthService
 
 namespace AuthenticationService
 {
@@ -26,6 +30,27 @@ namespace AuthenticationService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // Dodanie obsługi autentykacji JWT
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        // Jeśli chcesz weryfikować wydawcę i odbiorcę, ustaw powyższe opcje na true
+                        // i skonfiguruj ValidIssuer = Configuration["Jwt:Issuer"],
+                        // ValidAudience = Configuration["Jwt:Audience"]
+                    };
+                });
+
+            // Rejestracja AuthService
+            services.AddScoped<AuthService>();
+
+            // Dodaj tutaj inne zależności, które są potrzebne Twojej aplikacji
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +64,9 @@ namespace AuthenticationService
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // Dodaj middleware uwierzytelniania przed UseAuthorization
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
