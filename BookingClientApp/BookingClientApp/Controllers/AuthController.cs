@@ -22,26 +22,29 @@ namespace BookingClientApp.Controllers
     return View(new LoginViewModel());
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+[HttpPost]
+public async Task<IActionResult> Login(LoginViewModel model)
+{
+                        if (!ModelState.IsValid)
+    {
+        return View(model);
+    }
 
-            var token = await _authServiceClient.LoginAsync(model);
-            if (token != null)
-            {
-                // Przechowaj token w sesji/cookie itp.
-                return RedirectToAction("Index", "Home");
-            }
+    var token = await _authServiceClient.LoginAsync(model);
+                        if (token != null)
+    {
+        // Przechowaj token w sesji/cookie itp.
+        // Przykład: HttpContext.Session.SetString("AuthToken", token);
 
-            ModelState.AddModelError("", "Nieudana próba logowania");
-            return View(model);
-        }
+        // Przekierowanie do akcji CheckAvailability kontrolera Reservation
+        return RedirectToAction("CheckAvailability", "Reservation");
+    }
 
-        [HttpGet]
+    ModelState.AddModelError("", "Nieudana próba logowania");
+    return View(model);
+}
+
+[HttpGet]
         public IActionResult Register()
         {
             return View();

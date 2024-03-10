@@ -29,6 +29,11 @@ namespace BookingClientApp
                 client.BaseAddress = new Uri(Configuration["AuthenticationService:BaseAddress"]); // Pobierz adres URL z pliku konfiguracyjnego
             });
 
+            services.AddHttpClient<ReservationServiceClient>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration["ReservationService:BaseAddress"]);
+            });
+
             services.AddControllersWithViews();
 
             // Dodaj konfiguracjê CORS, jeœli potrzebujesz komunikacji z innymi us³ugami z ró¿nych Ÿróde³

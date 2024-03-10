@@ -1,0 +1,29 @@
+@model BookingClientApp.Models.ReservationViewModel
+
+@{
+    ViewData["Title"] = "Dokonaj rezerwacji";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="MakeReservation" method="post">
+    <input type="hidden" asp-for="RoomId" />
+
+    <div class="form-group">
+        <label asp-for="CheckInDate">Data zameldowania</label>
+        <input asp-for="CheckInDate" type="date" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CheckOutDate">Data wymeldowania</label>
+        <input asp-for="CheckOutDate" type="date" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Guests">Liczba gości</label>
+        <input asp-for="Guests" type="number" class="form-control" />
+        <span asp-validation-for="Guests" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Zarezerwuj</button>
+</form>

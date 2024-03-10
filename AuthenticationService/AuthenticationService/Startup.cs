@@ -2,18 +2,20 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using AuthenticationService.Services; // Upewnij się, że ta przestrzeń nazw odpowiada lokalizacji Twojego AuthService
+using System.Threading.Tasks;
+using AuthenticationService.Services;
+using AuthenticationService.Models; // Załóżmy, że tu znajduje się definicja MyDbContext
 
 namespace AuthenticationService
 {
@@ -26,10 +28,13 @@ namespace AuthenticationService
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // Konfiguracja DbContext
+            services.AddDbContext<MyDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Dodanie obsługi autentykacji JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -41,19 +46,23 @@ namespace AuthenticationService
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        // Jeśli chcesz weryfikować wydawcę i odbiorcę, ustaw powyższe opcje na true
-                        // i skonfiguruj ValidIssuer = Configuration["Jwt:Issuer"],
-                        // ValidAudience = Configuration["Jwt:Audience"]
                     };
                 });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowBookingClientApp", builder =>
+                    builder.WithOrigins("https://localhost:44300") // Dostosuj do Twojego przypadku
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
+            });
 
             // Rejestracja AuthService
             services.AddScoped<AuthService>();
 
-            // Dodaj tutaj inne zależności, które są potrzebne Twojej aplikacji
+            // Dodaj tutaj inne zależności potrzebne Twojej aplikacji
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -62,12 +71,9 @@ namespace AuthenticationService
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            // Dodaj middleware uwierzytelniania przed UseAuthorization
+            app.UseCors("AllowBookingClientApp");
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using AuthenticationService.Services;
+
 using AuthenticationService.DTOs;
-using AuthenticationService.Models;
-// Dodatkowe dyrektywy using, jeśli są potrzebne
 
 namespace AuthenticationService.Controllers
 {
@@ -11,53 +12,52 @@ namespace AuthenticationService.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
-        // Tu dodaj pole dla kontekstu bazy danych, jeśli używasz EF Core
 
-        public AuthController(AuthService authService /*, DbContext dbContext */)
+        public AuthController(AuthService authService)
         {
             _authService = authService;
-            // Tu przypisz kontekst bazy danych do pola klasy, jeśli używasz EF Core
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterDTO registerDto)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerDto)
         {
             // Sprawdź, czy użytkownik o takim emailu już istnieje
-            // Jeśli tak, zwróć odpowiedni komunikat błędu
-
-            // Hashowanie hasła
-            var hashedPassword = _authService.HashPassword(registerDto.Password);
+            var existingUser = await _authService.FindByEmailAsync(registerDto.Email);
+            if (existingUser != null)
+            {
+                return BadRequest("User with this email already exists.");
+            }
 
             // Utworzenie nowego użytkownika
-            var user = new User
+            var user = await _authService.RegisterAsync(registerDto);
+            if (user == null)
             {
-                Email = registerDto.Email,
-                PasswordHash = hashedPassword
-            };
-
-            // Zapisz użytkownika w bazie danych
+                return BadRequest("Failed to create new user.");
+            }
 
             // Zwróć informację o sukcesie (np. kod 201 Created)
-            return StatusCode(201);
+            return StatusCode(201, new { UserId = user.Id });
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDTO loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
-            // Sprawdź, czy użytkownik o takim emailu istnieje
-            var user = new User //to na chwile
+            return Ok(new { Token = "to jest jakis token" }); //tylko dla testu
+            var token = await _authService.LoginAsync(loginDto);
+            if (token == null)
             {
-                Email = "adam@gmail.com",
-                PasswordHash = "tojesthaslo"
-            };
-            // Sprawdź, czy hasło jest poprawne
-
-            // Jeśli uwierzytelnienie się powiedzie, generuj token JWT
-            var token = _authService.GenerateJwtToken( user );
+                return Unauthorized("Invalid email or password.");
+            }
 
             // Zwróć token JWT klientowi
             return Ok(new { Token = token });
         }
+
+    [HttpGet]
+        public String Get()
+{
+return "ciasto";
+}
 
         // Możesz dodać więcej akcji, np. odnowienie tokena, wylogowanie itp.
     }

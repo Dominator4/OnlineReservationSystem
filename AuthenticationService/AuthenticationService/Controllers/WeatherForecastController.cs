@@ -23,7 +23,8 @@ namespace AuthenticationService.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+//        [HttpGet]
+    [HttpGet("weatherforecastfff")]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
