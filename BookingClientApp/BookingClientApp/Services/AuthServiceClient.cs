@@ -32,9 +32,10 @@ namespace BookingClientApp.Services
 
         public async Task<string> LoginAsync(LoginViewModel model)
         {
-            var response = await _client.PostAsync("api/auth/login", new StringContent(JsonConvert.SerializeObject(model), System.Text.Encoding.UTF8, "application/json"));
+            var response = await _client.PostAsync("auth/login", new StringContent(JsonConvert.SerializeObject(model), System.Text.Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
             {
+
                 // Deserializuj odpowiedź, aby uzyskać token
                 var token = await response.Content.ReadAsStringAsync();
                 return token;

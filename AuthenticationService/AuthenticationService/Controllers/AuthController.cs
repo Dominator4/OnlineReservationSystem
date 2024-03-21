@@ -42,7 +42,7 @@ namespace AuthenticationService.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
-            return Ok(new { Token = "to jest jakis token" }); //tylko dla testu
+            //return Ok(new { Token = "to jest jakis token" }); //tylko dla testu
             var token = await _authService.LoginAsync(loginDto);
             if (token == null)
             {

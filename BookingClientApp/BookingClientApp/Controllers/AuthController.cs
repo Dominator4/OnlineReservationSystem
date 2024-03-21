@@ -33,11 +33,12 @@ public async Task<IActionResult> Login(LoginViewModel model)
     var token = await _authServiceClient.LoginAsync(model);
                         if (token != null)
     {
-        // Przechowaj token w sesji/cookie itp.
-        // Przykład: HttpContext.Session.SetString("AuthToken", token);
+                // Przechowaj token w sesji/cookie itp.
+                // Przykład: HttpContext.Session.SetString("AuthToken", token);
 
-        // Przekierowanie do akcji CheckAvailability kontrolera Reservation
-        return RedirectToAction("CheckAvailability", "Reservation");
+                // Przekierowanie do akcji CheckAvailability kontrolera Reservation
+                //        return RedirectToAction("CheckAvailability", "Reservation");
+                return View("UserProfile");
     }
 
     ModelState.AddModelError("", "Nieudana próba logowania");

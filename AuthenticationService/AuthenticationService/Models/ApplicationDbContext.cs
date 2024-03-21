@@ -3,9 +3,9 @@ using System;
 
 namespace AuthenticationService.Models
 {
-    public class MyDbContext : DbContext
+    public class ApplicationDbContext       : DbContext
     {
-        public MyDbContext(DbContextOptions<MyDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }

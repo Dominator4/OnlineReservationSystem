@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AuthenticationService.Services;
-using AuthenticationService.Models; // Załóżmy, że tu znajduje się definicja MyDbContext
+using AuthenticationService.Models;
 
 namespace AuthenticationService
 {
@@ -33,7 +33,7 @@ namespace AuthenticationService
             services.AddControllers();
 
             // Konfiguracja DbContext
-            services.AddDbContext<MyDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Dodanie obsługi autentykacji JWT
@@ -52,7 +52,7 @@ namespace AuthenticationService
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowBookingClientApp", builder =>
-                    builder.WithOrigins("https://localhost:44300") // Dostosuj do Twojego przypadku
+                    builder.WithOrigins("https://localhost:44300")
                             .AllowAnyMethod()
                             .AllowAnyHeader());
             });
