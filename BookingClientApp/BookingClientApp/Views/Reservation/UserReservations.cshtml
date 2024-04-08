@@ -1,0 +1,5 @@
+@foreach(var reservation in Model)
+{
+    <p>@reservation.CheckInDate - @reservation.CheckOutDate</p>
+    <a href="@Url.Action("GetReservationDetails", "Reservation", new { id = reservation.Id })">Szczegóły</a>
+}

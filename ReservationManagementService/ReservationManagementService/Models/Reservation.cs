@@ -14,12 +14,6 @@ namespace ReservationManagementService.Models
         public int Id { get; set; } // Unique identifier for the reservation
 
         [Required]
-        public int RoomId { get; set; } // Reference to the reserved room
-
-        [ForeignKey("RoomId")]
-        public Room Room { get; set; } // Navigation property for the room
-
-        [Required]
         public int CustomerId { get; set; } // Reference to the customer who made the reservation
 
         [ForeignKey("CustomerId")]
@@ -36,5 +30,6 @@ namespace ReservationManagementService.Models
         [Required]
         public string Status { get; set; } // Reservation status (e.g., pending, confirmed, cancelled)
 
+    public virtual ICollection<ReservationRoom> ReservationRooms { get; set; }
     }
 }

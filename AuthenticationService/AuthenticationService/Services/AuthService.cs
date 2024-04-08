@@ -1,6 +1,6 @@
-﻿using System;
-using AuthenticationService.Models;
+﻿using AuthenticationService.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using AuthenticationService.DTOs;
+using BCrypt.Net;
 
 namespace AuthenticationService.Services
 {
@@ -44,29 +45,23 @@ namespace AuthenticationService.Services
 
         public async Task<string> LoginAsync(LoginDTO loginDto)
         {
-            User user = new User();
-            user.Email = loginDto.Email;
-            user.Id = 11;
-            /*
-            var user = await FindByEmailAsync(loginDto.Email); //todo
+            var user = await FindByEmailAsync(loginDto.Email);
             if (user == null || !VerifyPassword(user.PasswordHash, loginDto.Password))
             {
                 return null;
             }
-            */
+
             return GenerateJwtToken(user);
         }
 
         public string HashPassword(string password)
         {
-            // Użyj tutaj metody hashowania hasła, np. BCrypt
-            return "zahashowane";// BCrypt.Net.BCrypt.HashPassword(password);
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
         public bool VerifyPassword(string hashedPassword, string providedPassword)
         {
-            // Użyj metody weryfikacji hasła, np. BCrypt
-            return true;// BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword);
+            return BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword);
         }
 
         public string GenerateJwtToken(User user)
@@ -82,7 +77,9 @@ namespace AuthenticationService.Services
                     // Dodaj więcej Claimów według potrzeb
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Audience = _configuration["Jwt:Audience"],
+                Issuer = _configuration["Jwt:Issuer"],
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);

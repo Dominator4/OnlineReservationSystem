@@ -44,10 +44,13 @@ namespace AuthenticationService
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
+                        ValidateIssuer = true, // Ustaw na true
+                        ValidateAudience = true, // Ustaw na true
+                        ValidIssuer = Configuration["Jwt:Issuer"], // Upewnij się, że te wartości są ustawione
+                        ValidAudience = Configuration["Jwt:Audience"] // i używane podczas generowania tokenów
                     };
                 });
+
 
             services.AddCors(options =>
             {
@@ -60,7 +63,6 @@ namespace AuthenticationService
             // Rejestracja AuthService
             services.AddScoped<AuthService>();
 
-            // Dodaj tutaj inne zależności potrzebne Twojej aplikacji
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

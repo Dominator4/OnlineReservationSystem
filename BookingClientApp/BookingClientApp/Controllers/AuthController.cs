@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using BookingClientApp.Models;
 using BookingClientApp.Services;
 using System.Threading.Tasks;
-// Dodatkowe dyrektywy using
+
 
 //Obsługuje akcje logowania i rejestracji w `BookingClientApp`.
 namespace BookingClientApp.Controllers
@@ -25,20 +27,29 @@ namespace BookingClientApp.Controllers
 [HttpPost]
 public async Task<IActionResult> Login(LoginViewModel model)
 {
-                        if (!ModelState.IsValid)
+    if (!ModelState.IsValid)
     {
         return View(model);
     }
 
     var token = await _authServiceClient.LoginAsync(model);
-                        if (token != null)
+//    if (token != null)
+if (!string.IsNullOrWhiteSpace(token))
     {
-                // Przechowaj token w sesji/cookie itp.
-                // Przykład: HttpContext.Session.SetString("AuthToken", token);
+        // Ustawienie tokena JWT w cookies
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true, // Nie dostępne dla JS
+            Secure = true, // Wymuszaj HTTPS
+            SameSite = SameSiteMode.Strict, // Ogranicz wysyłanie cookies do oryginalnej domeny
+            Expires = DateTime.UtcNow.AddHours(1) // Ustaw ważność tokena
+        };
 
-                // Przekierowanie do akcji CheckAvailability kontrolera Reservation
-                //        return RedirectToAction("CheckAvailability", "Reservation");
+        Response.Cookies.Append("AuthToken", token, cookieOptions);
+
+        // Przekierowanie do innej akcji
                 return View("UserProfile");
+//        return RedirectToAction("CheckAvailability", "Reservation");
     }
 
     ModelState.AddModelError("", "Nieudana próba logowania");
@@ -58,7 +69,7 @@ public async Task<IActionResult> Login(LoginViewModel model)
             {
                 return View(model);
             }
-
+            
             var result = await _authServiceClient.RegisterAsync(model);
             if (result != null)
             {

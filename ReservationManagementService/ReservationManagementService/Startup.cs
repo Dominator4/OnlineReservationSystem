@@ -7,15 +7,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using ReservationManagementService.Services;
+using ReservationManagementService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using ReservationManagementService.Services;
-using ReservationManagementService.Models;
-//Add-Migration InitialCreate
-//Update-Database
-//(localdb)\mssqllocaldb
+
 namespace ReservationManagementService
 {
     public class Startup
@@ -27,21 +27,44 @@ namespace ReservationManagementService
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
-            // Konfiguracja DbContext
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // Rejestracja AuthService
+            // Konfiguracja obsługi JWT
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Audience"]
+                    };
+                });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowBookingClientApp", builder =>
+                    builder.WithOrigins("https://localhost:44300")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
+            });
+
+
+
+
+            // Rejestracja serwisów
             services.AddScoped<ReservationService>();
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -52,8 +75,12 @@ namespace ReservationManagementService
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("AllowBookingClientApp");
 
+            app.UseAuthentication(); // Dodaj autoryzację
             app.UseAuthorization();
+
+            app.UseCors("AllowAll");
 
             app.UseEndpoints(endpoints =>
             {

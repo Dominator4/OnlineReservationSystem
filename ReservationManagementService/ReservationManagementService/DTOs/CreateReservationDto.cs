@@ -7,10 +7,11 @@ namespace ReservationManagementService.DTOs
 {
     public class CreateReservationDto
     {
-        public int RoomId { get; set; } // Identyfikator pokoju, który ma zostać zarezerwowany
+    public List<int> SelectedRoomIds { get; set; } = new List<int>();
         public int CustomerId { get; set; } // Identyfikator klienta dokonującego rezerwacji
         public DateTime CheckInDate { get; set; } // Data zameldowania
         public DateTime CheckOutDate { get; set; } // Data wymeldowania
+        public int Guests { get; set; }
     }
 
 }

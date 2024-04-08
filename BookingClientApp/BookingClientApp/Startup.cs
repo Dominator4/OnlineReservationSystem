@@ -33,7 +33,7 @@ namespace BookingClientApp
             {
                 client.BaseAddress = new Uri(Configuration["ReservationService:BaseAddress"]);
             });
-
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
 
             // Dodaj konfiguracjê CORS, jeœli potrzebujesz komunikacji z innymi us³ugami z ró¿nych Ÿróde³
@@ -65,7 +65,8 @@ namespace BookingClientApp
 
             app.UseCors("AllowAll"); // U¿yj skonfigurowanej polityki CORS
 
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

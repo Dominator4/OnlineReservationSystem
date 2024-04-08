@@ -24,7 +24,7 @@ public class ReservationController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CheckAvailability(AvailableRoomsViewModel model)
+   public async Task<IActionResult> CheckAvailability(AvailableRoomsViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -36,7 +36,7 @@ public class ReservationController : Controller
         return View(model);
     }
 
-    [HttpGet]
+/*    [HttpGet]
     public IActionResult MakeReservation(int roomId, DateTime checkInDate, DateTime checkOutDate)
     {
         var model = new ReservationViewModel
@@ -47,23 +47,51 @@ public class ReservationController : Controller
         };
         return View(model);
     }
+*/
 
     [HttpPost]
     public async Task<IActionResult> MakeReservation(ReservationViewModel model)
     {
-        if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
         {
-            return View(model);
+                //return View(model);
+                ViewData["Message"] = "To mój komunikat!";
+                return View("err");
+            }
+
+        var response = await _reservationServiceClient.MakeReservation(model);
+            int statusCode = (int)response.StatusCode;
+            if (statusCode != 400)
+        {
+                return View("UserProfile");
+//            return RedirectToAction("ReservationConfirmation");
+        }
+            
+//            ModelState.AddModelError("", "Nie udało się dokonać rezerwacji.");
+            //return View(model);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            ViewData["Message"] = responseContent;
+            return View("err");
         }
 
-        var success = await _reservationServiceClient.MakeReservation(model);
-        if (success)
-        {
-            return RedirectToAction("ReservationConfirmation");
-        }
+[HttpGet]
+public async Task<IActionResult> UserReservations()
+{
+    var reservations = await _reservationServiceClient.GetUserReservations();
+    return View(reservations);
+}
 
-        ModelState.AddModelError("", "Nie udało się dokonać rezerwacji.");
-        return View(model);
+[HttpGet("details/{id}")]
+public async Task<IActionResult> GetReservationDetails(int id)
+{
+    var reservationDetails = await _reservationServiceClient.GetReservationDetails(id);
+    if (reservationDetails == null)
+    {
+        return NotFound();
     }
+    return View(reservationDetails); // Widok ze szczegółami rezerwacji
+}
+
+
 }
 }

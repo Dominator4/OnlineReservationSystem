@@ -12,11 +12,12 @@ namespace ReservationManagementService.Models
         [Key]
         public int Id { get; set; } // Unique identifier for the customer
 
-        [Required]
+        public int UserId { get; set; }
+
         [StringLength(50)]
         public string FirstName { get; set; } // Customer's first name
 
-        [Required]
+
         [StringLength(50)]
         public string LastName { get; set; } // Customer's last name
 

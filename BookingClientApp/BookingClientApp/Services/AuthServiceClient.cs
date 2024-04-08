@@ -17,7 +17,7 @@ namespace BookingClientApp.Services
 
         public async Task<string> RegisterAsync(RegisterViewModel model)
         {
-            var response = await _client.PostAsync("api/auth/register", new StringContent(JsonConvert.SerializeObject(model), System.Text.Encoding.UTF8, "application/json"));
+            var response = await _client.PostAsync("auth/register", new StringContent(JsonConvert.SerializeObject(model), System.Text.Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
             {
                 // Możesz zwrócić token lub inne dane z odpowiedzi

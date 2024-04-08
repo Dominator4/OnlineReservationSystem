@@ -27,6 +27,8 @@ namespace ReservationManagementService.Models
         public bool IsAvailable { get; set; } // Informacja, czy pokój jest dostępny
 
         // Właściwość nawigacyjna wskazująca na rezerwacje tego pokoju
-        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+//        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+
+    public virtual ICollection<ReservationRoom> ReservationRooms { get; set; }
     }
 }
