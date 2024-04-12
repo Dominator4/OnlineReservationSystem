@@ -30,6 +30,6 @@ namespace ReservationManagementService.Models
         [Required]
         public string Status { get; set; } // Reservation status (e.g., pending, confirmed, cancelled)
 
-    public virtual ICollection<ReservationRoom> ReservationRooms { get; set; }
+        public virtual ICollection<ReservationRoom> ReservationRooms { get; set; }
     }
 }

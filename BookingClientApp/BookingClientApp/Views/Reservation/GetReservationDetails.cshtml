@@ -1,0 +1,13 @@
+@model BookingClientApp.Models.DetailReservationViewModel
+
+<h2>Szczegóły rezerwacji</h2>
+
+<p>Check-in: @Model.CheckInDate.ToShortDateString()</p>
+<p>Check-out: @Model.CheckOutDate.ToShortDateString()</p>
+<p>Goście: @Model.Guests</p>
+
+<h3>Pokoje:</h3>
+@foreach (var room in Model.ReservetRooms)
+{
+	<p>Pokój: @room.Number, Piętro: @room.Floor, Typ: @room.Type</p>
+}

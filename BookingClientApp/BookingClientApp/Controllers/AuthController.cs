@@ -48,8 +48,7 @@ if (!string.IsNullOrWhiteSpace(token))
         Response.Cookies.Append("AuthToken", token, cookieOptions);
 
         // Przekierowanie do innej akcji
-                return View("UserProfile");
-//        return RedirectToAction("CheckAvailability", "Reservation");
+        return RedirectToAction("UserProfile", "Reservation");
     }
 
     ModelState.AddModelError("", "Nieudana próba logowania");

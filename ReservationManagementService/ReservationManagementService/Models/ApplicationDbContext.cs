@@ -34,6 +34,13 @@ namespace ReservationManagementService.Models
                 .HasOne(rr => rr.Room)
                 .WithMany(r => r.ReservationRooms)
                 .HasForeignKey(rr => rr.RoomId);
+
+            modelBuilder.Entity<Customer>()
+                .HasKey(c => c.Id); // Potwierdzenie, że Id to klucz główny
+
+            modelBuilder.Entity<Customer>()
+                .Property(c => c.Id)
+                .ValueGeneratedNever(); // Konfiguracja, aby EF nie generował wartości dla Id automatycznie
         }
     }
 }

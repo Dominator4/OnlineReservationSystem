@@ -1,0 +1,15 @@
+@model BookingClientApp.Models.UserViewModel
+
+<h2>Witaj, @Model.FirstName @Model.LastName</h2>
+
+<ul>
+    <li>
+        <a href="@Url.Action("UserReservations", "Reservation")">Twoje rezerwacje</a>
+    </li>
+    <li>
+        <a href="@Url.Action("CheckAvailability", "Reservation")">Nowa rezerwacja</a>
+    </li>
+    <li>
+                <a href="@Url.Action("CompleteProfile", "Reservation")">Edytuj swój profil</a>
+    </li>
+</ul>

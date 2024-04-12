@@ -1,5 +1,16 @@
-@foreach(var reservation in Model)
+@model IEnumerable<BookingClientApp.Models.ReservationViewModel>
+
+<h2>Twoje rezerwacje</h2>
+
+@foreach (var reservation in Model)
 {
-    <p>@reservation.CheckInDate - @reservation.CheckOutDate</p>
-    <a href="@Url.Action("GetReservationDetails", "Reservation", new { id = reservation.Id })">Szczegóły</a>
+    <div>
+        <p>@reservation.CheckInDate.ToShortDateString() - @reservation.CheckOutDate.ToShortDateString()</p>
+        <a href="@Url.Action("GetReservationDetails", "Reservation", new { id = reservation.Id })">Szczegóły</a>
+        <!-- Dodaj przycisk anulowania dla każdej rezerwacji -->
+        <form action="@Url.Action("CancelReservation", "Reservation")" method="post">
+            <input type="hidden" name="id" value="@reservation.Id" />
+            <button type="submit" class="btn btn-danger">Anuluj rezerwację</button>
+        </form>
+    </div>
 }

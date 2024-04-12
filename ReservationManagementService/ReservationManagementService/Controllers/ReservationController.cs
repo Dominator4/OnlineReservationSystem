@@ -24,6 +24,46 @@ namespace ReservationManagementService.Controllers
             _reservationService = reservationService;
         }
 
+[HttpGet("Check-User")]
+[Authorize]
+public async Task<ActionResult<UserDto>> CheckUser()
+{
+    int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+    // string userEmail = User.FindFirst(ClaimTypes.Email)?.Value; // Jeśli potrzebujesz
+
+    var user = await _reservationService.GetUser(userId);
+    if (user != null)
+    {
+        return Ok(user);
+    }
+    else
+    {
+        return NotFound();
+    }
+}
+
+[HttpPut("update-user")]
+[Authorize]
+public async Task<IActionResult> UpdateUser([FromBody] UserDto userDto)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+    bool updateResult = await _reservationService.UpdateOrCreateUserAsync(userId, userDto);
+
+    if (updateResult)
+    {
+        return NoContent(); // Pomyślna aktualizacja lub utworzenie użytkownika
+    }
+    else
+    {
+        return BadRequest(); // W przypadku nieoczekiwanego błędu
+    }
+}
+
         // Metoda do sprawdzenia dostępności pokoi
         [HttpPost("check-availability")]
         [Authorize]
@@ -40,12 +80,8 @@ namespace ReservationManagementService.Controllers
         {
             try
             {
+                int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-        int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        string userEmail = User.FindFirst(ClaimTypes.Email)?.Value; // Asumpcja
-
-        // Upewnij się, że klient istnieje w bazie danych przed utworzeniem rezerwacji.
-        await _reservationService.EnsureCustomerExists(userId, userEmail);
                 createReservationDto.CustomerId = userId;
                 var reservation = await _reservationService.MakeReservation(createReservationDto);
                 return CreatedAtAction(nameof(GetReservationById), new { id = reservation.Id }, reservation);
@@ -71,15 +107,42 @@ namespace ReservationManagementService.Controllers
 
         [HttpGet("user-reservations")]
         public async Task<ActionResult<IEnumerable<ReservationDto>>> GetUserReservations()
+        {
+            int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var reservations = await _reservationService.GetUserReservations(userId);
+            if (reservations == null || !reservations.Any())
+            {
+                return NotFound();
+            }
+            return Ok(reservations);
+        }
+
+[HttpGet("details/{id}")]
+public async Task<ActionResult<DetailReservationDto>> GetReservationDetails(int id)
 {
-        int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-    var reservations = await _reservationService.GetUserReservations(userId);
-    if (reservations == null || !reservations.Any())
+    var reservationDetails = await _reservationService.GetReservationDetails(id); // Załóżmy, że ta metoda istnieje i zwraca DetailReservationDto
+    if (reservationDetails == null)
     {
         return NotFound();
     }
-    return Ok(reservations);
+    return Ok(reservationDetails);
 }
+
+[HttpDelete("cancel/{id}")]
+public async Task<IActionResult> CancelReservation(int id)
+{
+                int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+    var success = await _reservationService.CancelReservation(id, userId);
+    if (success)
+    {
+        return Ok();
+    }
+    else
+    {
+        return NotFound();
+    }
+}
+
 
         [HttpGet]
         public String Get()

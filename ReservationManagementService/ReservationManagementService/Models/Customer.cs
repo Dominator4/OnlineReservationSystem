@@ -12,8 +12,6 @@ namespace ReservationManagementService.Models
         [Key]
         public int Id { get; set; } // Unique identifier for the customer
 
-        public int UserId { get; set; }
-
         [StringLength(50)]
         public string FirstName { get; set; } // Customer's first name
 
