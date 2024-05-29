@@ -8,28 +8,56 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReservationManagementService.Models
 {
-    public class Reservation
-    {
-        [Key]
-        public int Id { get; set; } // Unique identifier for the reservation
+/// <summary>
+/// Represents a reservation made by a customer.
+/// </summary>
+public class Reservation
+{
+    /// <summary>
+    /// Unique identifier for the reservation.
+    /// </summary>
+    [Key]
+    public int Id { get; set; }
 
-        [Required]
-        public int CustomerId { get; set; } // Reference to the customer who made the reservation
+    /// <summary>
+    /// Reference to the customer who made the reservation.
+    /// </summary>
+    [Required]
+    public int CustomerId { get; set; }
 
-        [ForeignKey("CustomerId")]
-        public Customer Customer { get; set; } // Navigation property for the customer
+    /// <summary>
+    /// Navigation property for the customer.
+    /// </summary>
+    [ForeignKey("CustomerId")]
+    public Customer Customer { get; set; }
 
-        [Required]
-        public DateTime CheckInDate { get; set; } // Check-in date
+    /// <summary>
+    /// Check-in date for the reservation.
+    /// </summary>
+    [Required]
+    public DateTime CheckInDate { get; set; }
 
-        [Required]
-        public DateTime CheckOutDate { get; set; } // Check-out date
+    /// <summary>
+    /// Check-out date for the reservation.
+    /// </summary>
+    [Required]
+    public DateTime CheckOutDate { get; set; }
 
-        public int Guests { get; set; } // Number of guests
+    /// <summary>
+    /// Number of guests included in the reservation.
+    /// </summary>
+    public int Guests { get; set; }
 
-        [Required]
-        public string Status { get; set; } // Reservation status (e.g., pending, confirmed, cancelled)
+    /// <summary>
+    /// Current status of the reservation (e.g., pending, confirmed, cancelled).
+    /// </summary>
+    [Required]
+    public string Status { get; set; }
 
-        public virtual ICollection<ReservationRoom> ReservationRooms { get; set; }
-    }
+    /// <summary>
+    /// Collection of ReservationRoom links detailing the rooms involved in the reservation.
+    /// </summary>
+    public virtual ICollection<ReservationRoom> ReservationRooms { get; set; }
+}
+
 }

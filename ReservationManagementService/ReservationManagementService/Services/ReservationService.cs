@@ -7,66 +7,86 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ReservationManagementService.DTOs;
 using ReservationManagementService.Models;
-//Add-Migration AddReservationRoomRelationship
+
 namespace ReservationManagementService.Services
 {
+    /// <summary>
+    /// Provides functionality for managing reservations, users, and checking room availability.
+    /// </summary>
     public class ReservationService
     {
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the ReservationService with the specified database context.
+        /// </summary>
+        /// <param name="context">The database context to be used by this service.</param>
         public ReservationService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-public async Task<UserDto> GetUser(int userId)
-{
-    // Sprawdź, czy klient o danym userId już istnieje
-    var existingCustomer = await _context.Customers
-                                         .FirstOrDefaultAsync(c => c.Id == userId);
-    if (existingCustomer != null)
-    {
-        return new UserDto
+        /// <summary>
+        /// Retrieves a user DTO from the database based on the provided user ID.
+        /// </summary>
+        /// <param name="userId">The ID of the user to retrieve.</param>
+        /// <returns>A UserDto object if found; otherwise, null.</returns>
+        public async Task<UserDto> GetUser(int userId)
         {
-            FirstName = existingCustomer.FirstName,
-            LastName = existingCustomer.LastName,
-            PhoneNumber = existingCustomer.PhoneNumber
-        };
-    }
+            var existingCustomer = await _context.Customers
+                                                 .FirstOrDefaultAsync(c => c.Id == userId);
+            if (existingCustomer != null)
+            {
+                return new UserDto
+                {
+                    FirstName = existingCustomer.FirstName,
+                    LastName = existingCustomer.LastName,
+                    PhoneNumber = existingCustomer.PhoneNumber
+                };
+            }
 
-    return null;
-}
-            
-public async Task<bool> UpdateOrCreateUserAsync(int userId, UserDto userDto)
-{
-    var user = await _context.Customers.FirstOrDefaultAsync(u => u.Id == userId);
+            return null;
+        }
 
-    if (user == null)
-    {
-        // Użytkownik nie został znaleziony, tworzymy nowego
-        user = new Customer
+        /// <summary>
+        /// Updates an existing user or creates a new user if the user ID does not exist.
+        /// </summary>
+        /// <param name="userId">The ID of the user to update or create.</param>
+        /// <param name="userDto">The user data transfer object containing the user details.</param>
+        /// <returns>True if the operation is successful, otherwise false.</returns>
+        public async Task<bool> UpdateOrCreateUserAsync(int userId, UserDto userDto)
         {
-            Id = userId,
-            FirstName = userDto.FirstName,
-            LastName = userDto.LastName,
-            PhoneNumber = userDto.PhoneNumber,
-            Email = "dupka@onet.pl",
-        };
-        _context.Customers.Add(user);
-    }
-    else
-    {
-        // Aktualizacja istniejącego użytkownika
-        user.FirstName = userDto.FirstName;
-        user.LastName = userDto.LastName;
-        user.PhoneNumber = userDto.PhoneNumber;
-    }
+            var user = await _context.Customers.FirstOrDefaultAsync(u => u.Id == userId);
 
-    await _context.SaveChangesAsync();
-    return true;
-}
+            if (user == null)
+            {
+                user = new Customer
+                {
+                    Id = userId,
+                    FirstName = userDto.FirstName,
+                    LastName = userDto.LastName,
+                    PhoneNumber = userDto.PhoneNumber,
+                    Email = "example@example.com", // Placeholder email; consider updating based on requirements
+                };
+                _context.Customers.Add(user);
+            }
+            else
+            {
+                user.FirstName = userDto.FirstName;
+                user.LastName = userDto.LastName;
+                user.PhoneNumber = userDto.PhoneNumber;
+            }
 
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
+        /// <summary>
+        /// Checks the availability of rooms for a given date range.
+        /// </summary>
+        /// <param name="checkInDate">The check-in date to consider for availability.</param>
+        /// <param name="checkOutDate">The check-out date to consider for availability.</param>
+        /// <returns>A list of available rooms as RoomDto objects.</returns>
         public async Task<IEnumerable<RoomDto>> CheckAvailability(DateTime checkInDate, DateTime checkOutDate)
         {
             var availableRooms = await _context.Rooms
@@ -88,18 +108,18 @@ public async Task<bool> UpdateOrCreateUserAsync(int userId, UserDto userDto)
             return availableRooms;
         }
 
+        /// <summary>
+        /// Creates a reservation based on the provided reservation details.
+        /// </summary>
+        /// <param name="createReservationDto">The details of the reservation to create.</param>
+        /// <returns>A ReservationDto object representing the newly created reservation.</returns>
         public async Task<ReservationDto> MakeReservation(CreateReservationDto createReservationDto)
         {
-            // Walidacja dat
-            
             if (createReservationDto.CheckInDate >= createReservationDto.CheckOutDate)
             {
-                throw new ArgumentException("Data zameldowania musi być wcześniejsza niż data wymeldowania.");
+                throw new ArgumentException("Check-in date must be earlier than check-out date.");
             }
 
-
-            // Tworzenie instancji rezerwacji
-            
             var reservation = new Reservation
             {
                 CustomerId = createReservationDto.CustomerId,
@@ -109,12 +129,9 @@ public async Task<bool> UpdateOrCreateUserAsync(int userId, UserDto userDto)
                 Status = "Confirmed"
             };
 
-
             _context.Reservations.Add(reservation);
-                        await _context.SaveChangesAsync();
-            
+            await _context.SaveChangesAsync();
 
-            // Przypisanie pokoi do rezerwacji
             foreach (var roomId in createReservationDto.SelectedRoomIds)
             {
                 var reservationRoom = new ReservationRoom
@@ -128,7 +145,6 @@ public async Task<bool> UpdateOrCreateUserAsync(int userId, UserDto userDto)
 
             await _context.SaveChangesAsync();
 
-
             return new ReservationDto
             {
                 RoomIds = createReservationDto.SelectedRoomIds,
@@ -140,6 +156,11 @@ public async Task<bool> UpdateOrCreateUserAsync(int userId, UserDto userDto)
             };
         }
 
+        /// <summary>
+        /// Retrieves a reservation by its ID, including related data.
+        /// </summary>
+        /// <param name="id">The ID of the reservation to retrieve.</param>
+        /// <returns>A Reservation object if found; otherwise, null.</returns>
         public async Task<Reservation> GetReservationById(int id)
         {
             return await _context.Reservations
@@ -149,94 +170,99 @@ public async Task<bool> UpdateOrCreateUserAsync(int userId, UserDto userDto)
                 .FirstOrDefaultAsync(reservation => reservation.Id == id);
         }
 
+        /// <summary>
+        /// Retrieves all reservations made by a specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose reservations are to be retrieved.</param>
+        /// <returns>A list of ReservationDto objects representing the user's reservations.</returns>
         public async Task<IEnumerable<ReservationDto>> GetUserReservations(int userId)
         {
-            // Pobierz wszystkie rezerwacje dla danego userId
             var reservations = await _context.Reservations
                 .Where(reservation => reservation.CustomerId == userId)
                 .Select(reservation => new ReservationDto
                 {
-                    // Przypisz właściwości z Reservation do ReservationDto
-                    // Zakładam, że klasa ReservationDto została odpowiednio zdefiniowana
                     Id = reservation.Id,
                     CustomerId = reservation.CustomerId,
                     CheckInDate = reservation.CheckInDate,
                     CheckOutDate = reservation.CheckOutDate,
                     Guests = reservation.Guests,
                     Status = reservation.Status,
-                    // Przykład, jak można przekształcić powiązane pokoje, jeśli to potrzebne
-                    //RoomIds = reservation.ReservationRooms.Select(rr => rr.RoomId).ToList()
                 })
                 .ToListAsync();
 
             return reservations;
         }
 
-public async Task<DetailReservationDto> GetReservationDetails(int reservationId)
-{
-    var reservation = await _context.Reservations
-        .Include(r => r.ReservationRooms)
-            .ThenInclude(rr => rr.Room)
-        .FirstOrDefaultAsync(r => r.Id == reservationId);
-
-    if (reservation == null)
-    {
-        return null; // Lub rzuć wyjątek, jeśli to preferujesz
-    }
-
-    var detailReservationDto = new DetailReservationDto
-    {
-        CheckInDate = reservation.CheckInDate,
-        CheckOutDate = reservation.CheckOutDate,
-        Guests = reservation.Guests,
-        ReservetRooms = reservation.ReservationRooms.Select(rr => new RoomDto
+        /// <summary>
+        /// Retrieves detailed information about a specific reservation.
+        /// </summary>
+        /// <param name="reservationId">The ID of the reservation to retrieve details for.</param>
+        /// <returns>A DetailReservationDto object if found; otherwise, null.</returns>
+        public async Task<DetailReservationDto> GetReservationDetails(int reservationId)
         {
-            Id = rr.Room.Id,
-            Number = rr.Room.Number,
-            Floor = rr.Room.Floor,
-            Type = rr.Room.Type,
-            Amenities = rr.Room.Amenities, // Upewnij się, że Twoja klasa Room posiada te właściwości
-            Price = rr.Room.Price, // Zakładając, że masz cenę pokoi w modelu
-            IsAvailable = true // Może wymagać dodatkowej logiki do określenia dostępności
-        }).ToList()
-    };
+            var reservation = await _context.Reservations
+                .Include(r => r.ReservationRooms)
+                    .ThenInclude(rr => rr.Room)
+                .FirstOrDefaultAsync(r => r.Id == reservationId);
 
-    return detailReservationDto;
-}
+            if (reservation == null)
+            {
+                return null; // Or throw an exception if preferred
+            }
 
-public async Task<bool> CancelReservation(int reservationId, int userId)
-{
-    using var transaction = await _context.Database.BeginTransactionAsync();
-    try
-    {
-        var reservation = await _context.Reservations.FindAsync(reservationId);
-        if (reservation == null || reservation.CustomerId != userId)
-        {
-            return false; // Rezerwacja nie istnieje lub nie należy do użytkownika
+            var detailReservationDto = new DetailReservationDto
+            {
+                CheckInDate = reservation.CheckInDate,
+                CheckOutDate = reservation.CheckOutDate,
+                Guests = reservation.Guests,
+                ReservedRooms = reservation.ReservationRooms.Select(rr => new RoomDto
+                {
+                    Id = rr.Room.Id,
+                    Number = rr.Room.Number,
+                    Floor = rr.Room.Floor,
+                    Type = rr.Room.Type,
+                    Amenities = rr.Room.Amenities,
+                    Price = rr.Room.Price,
+                    IsAvailable = true
+                }).ToList()
+            };
+
+            return detailReservationDto;
         }
 
-        // Usuwanie powiązanych pokoi z rezerwacją
-        var reservationRooms = _context.ReservationRooms.Where(rr => rr.ReservationId == reservationId);
-        _context.ReservationRooms.RemoveRange(reservationRooms);
+        /// <summary>
+        /// Cancels a reservation if it exists and belongs to the specified user.
+        /// </summary>
+        /// <param name="reservationId">The ID of the reservation to cancel.</param>
+        /// <param name="userId">The ID of the user attempting to cancel the reservation.</param>
+        /// <returns>True if the reservation is successfully canceled; otherwise, false.</returns>
+        public async Task<bool> CancelReservation(int reservationId, int userId)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var reservation = await _context.Reservations.FindAsync(reservationId);
+                if (reservation == null || reservation.CustomerId != userId)
+                {
+                    return false; // Reservation does not exist or does not belong to the user
+                }
 
-        await _context.SaveChangesAsync();
+                var reservationRooms = _context.ReservationRooms.Where(rr => rr.ReservationId == reservationId);
+                _context.ReservationRooms.RemoveRange(reservationRooms);
 
-        // Usuwanie rezerwacji
-        _context.Reservations.Remove(reservation);
-        await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-        await transaction.CommitAsync();
-        return true;
-    }
-    catch (Exception)
-    {
-        // Tutaj możesz obsłużyć wyjątek, jeśli to konieczne
-        await transaction.RollbackAsync();
-        return false;
-    }
-}
+                _context.Reservations.Remove(reservation);
+                await _context.SaveChangesAsync();
 
-
-
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return false;
+            }
+        }
     }
 }

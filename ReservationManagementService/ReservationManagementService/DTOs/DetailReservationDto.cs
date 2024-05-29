@@ -3,11 +3,30 @@ using System.Collections.Generic;
 
 namespace ReservationManagementService.DTOs
 {
-    public class DetailReservationDto
-    {
-        public IEnumerable<RoomDto> ReservetRooms { get; set; }
-        public DateTime CheckInDate { get; set; }
-        public DateTime CheckOutDate { get; set; }
-        public int Guests { get; set; }
-    }
+/// <summary>
+/// DTO containing detailed information about a reservation.
+/// </summary>
+public class DetailReservationDto
+{
+    /// <summary>
+    /// List of rooms reserved.
+    /// </summary>
+    public IEnumerable<RoomDto> ReservedRooms { get; set; }
+
+    /// <summary>
+    /// Check-in date for the reservation.
+    /// </summary>
+    public DateTime CheckInDate { get; set; }
+
+    /// <summary>
+    /// Check-out date for the reservation.
+    /// </summary>
+    public DateTime CheckOutDate { get; set; }
+
+    /// <summary>
+    /// Number of guests in the reservation.
+    /// </summary>
+    public int Guests { get; set; }
+}
+
 }

@@ -7,23 +7,44 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ReservationManagementService.Models
 {
-    public class Customer
-    {
-        [Key]
-        public int Id { get; set; } // Unique identifier for the customer
+/// <summary>
+/// Represents a customer in the reservation management system.
+/// </summary>
+public class Customer
+{
+    /// <summary>
+    /// Unique identifier for the customer.
+    /// </summary>
+    [Key]
+    public int Id { get; set; }
 
-        [StringLength(50)]
-        public string FirstName { get; set; } // Customer's first name
+    /// <summary>
+    /// First name of the customer.
+    /// </summary>
+    [StringLength(50)]
+    public string FirstName { get; set; }
 
+    /// <summary>
+    /// Last name of the customer.
+    /// </summary>
+    [StringLength(50)]
+    public string LastName { get; set; }
 
-        [StringLength(50)]
-        public string LastName { get; set; } // Customer's last name
+    /// <summary>
+    /// Email address of the customer.
+    /// </summary>
+    [EmailAddress]
+    public string Email { get; set; }
 
-        [EmailAddress]
-        public string Email { get; set; } // Customer's email address
+    /// <summary>
+    /// Phone number of the customer.
+    /// </summary>
+    public string PhoneNumber { get; set; }
 
-        public string PhoneNumber { get; set; } // Customer's phone number
+    /// <summary>
+    /// List of reservations made by the customer.
+    /// </summary>
+    public List<Reservation> Reservations { get; set; }
+}
 
-        public List<Reservation> Reservations { get; set; } // List of reservations made by the customer
-    }
 }

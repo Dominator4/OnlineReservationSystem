@@ -5,15 +5,46 @@ using System.Threading.Tasks;
 
 namespace ReservationManagementService.DTOs
 {
-    public class ReservationDto
-    {
-        public int Id { get; set; }
-        public List<int> RoomIds { get; set; } = new List<int>();
-        public int CustomerId { get; set; } // Identyfikator klienta dokonującego rezerwacji
-        public DateTime CheckInDate { get; set; } // Data zameldowania
-        public DateTime CheckOutDate { get; set; } // Data wymeldowania
-        public string Status { get; set; } // Status rezerwacji (np. potwierdzona, oczekująca, anulowana)
-        public int Guests { get; set; }
-    }
+/// <summary>
+/// General DTO for a reservation.
+/// </summary>
+public class ReservationDto
+{
+    /// <summary>
+    /// Unique identifier for the reservation.
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
+    /// List of room IDs associated with the reservation.
+    /// </summary>
+    public List<int> RoomIds { get; set; } = new List<int>();
+
+    /// <summary>
+    /// Customer ID making the reservation.
+    /// </summary>
+    public int CustomerId { get; set; }
+
+    /// <summary>
+    /// Check-in date for the reservation.
+    /// </summary>
+    public DateTime CheckInDate { get; set; }
+
+    /// <summary>
+    /// Check-out date for the reservation.
+    /// </summary>
+    public DateTime CheckOutDate { get; set; }
+
+    /// <summary>
+    /// Status of the reservation (e.g., confirmed, pending, canceled).
+    /// </summary>
+    public string Status { get; set; }
+
+    /// <summary>
+    /// Number of guests included in the reservation.
+    /// </summary>
+    public int Guests { get; set; }
+}
+
 
 }
