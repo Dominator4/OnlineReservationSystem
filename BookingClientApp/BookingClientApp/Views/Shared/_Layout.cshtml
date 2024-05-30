@@ -20,6 +20,16 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="UserProfile">Profile</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -33,6 +43,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
+            <p>&copy; 2023 - BookingClientApp - <a href="https://docs.microsoft.com/aspnet/core">Learn ASP.NET Core</a></p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

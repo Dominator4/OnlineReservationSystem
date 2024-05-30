@@ -66,6 +66,7 @@ namespace AuthenticationService
                 });
 
             // Setup CORS policy for the BookingClientApp.
+/*
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowBookingClientApp", builder =>
@@ -73,6 +74,7 @@ namespace AuthenticationService
                             .AllowAnyMethod()
                             .AllowAnyHeader());
             });
+*/
 
             // Register AuthService with dependency injection.
             services.AddScoped<AuthService>();
@@ -93,7 +95,7 @@ namespace AuthenticationService
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors("AllowBookingClientApp");
+//            app.UseCors("AllowBookingClientApp");
 
             // Apply authentication and authorization middleware.
             app.UseAuthentication();

@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AuthenticationService</name>
+    </assembly>
+    <members>
+        <member name="T:AuthenticationService.Controllers.AuthController">
+            <summary>
+            Controller handling authentication operations such as login, registration, and logout.
+            </summary>
+        </member>
+        <member name="M:AuthenticationService.Controllers.AuthController.#ctor(AuthenticationService.Services.AuthService)">
+            <summary>
+            Initializes a new instance of the AuthController class.
+            </summary>
+            <param name="authService">The authentication service to be used by this controller.</param>
+        </member>
+        <member name="M:AuthenticationService.Controllers.AuthController.Register(AuthenticationService.DTOs.RegisterDTO)">
+            <summary>
+            Registers a new user with the provided registration details.
+            </summary>
+            <param name="registerDto">The registration details including email and password.</param>
+            <returns>Returns status code 201 if the user is successfully created; otherwise, returns a BadRequest with an error message.</returns>
+        </member>
+        <member name="M:AuthenticationService.Controllers.AuthController.Login(AuthenticationService.DTOs.LoginDTO)">
+            <summary>
+            Authenticates a user and generates a JWT token if the login is successful.
+            </summary>
+            <param name="loginDto">The login details including email and password.</param>
+            <returns>Returns an Ok result with a JWT token if authentication is successful; otherwise, returns Unauthorized with an error message.</returns>
+        </member>
+        <member name="M:AuthenticationService.Controllers.AuthController.Logout">
+            <summary>
+            Logs out the user.
+            </summary>
+            <returns>Returns an Ok result with a logout success message.</returns>
+        </member>
+        <member name="M:AuthenticationService.Controllers.AuthController.Get">
+            <summary>
+            A simple method to check if the AuthenticationService is running.
+            </summary>
+            <returns>A string indicating that the service is started.</returns>
+        </member>
+        <member name="T:AuthenticationService.DTOs.LoginDTO">
+            <summary>
+            Data Transfer Object for user login. Contains the necessary information for user authentication.
+            </summary>
+        </member>
+        <member name="P:AuthenticationService.DTOs.LoginDTO.Email">
+            <summary>
+            User's email address used for login.
+            </summary>
+        </member>
+        <member name="P:AuthenticationService.DTOs.LoginDTO.Password">
+            <summary>
+            User's password used for login.
+            </summary>
+        </member>
+        <member name="T:AuthenticationService.DTOs.RegisterDTO">
+            <summary>
+            Data Transfer Object for user registration. Contains the necessary information to register a new user.
+            </summary>
+        </member>
+        <member name="P:AuthenticationService.DTOs.RegisterDTO.Email">
+            <summary>
+            User's email address used for registration.
+            </summary>
+        </member>
+        <member name="P:AuthenticationService.DTOs.RegisterDTO.Password">
+            <summary>
+            User's password used for registration.
+            </summary>
+        </member>
+        <member name="T:AuthenticationService.Models.ApplicationDbContext">
+            <summary>
+            Database context for the authentication service, encapsulating all data access configurations.
+            </summary>
+        </member>
+        <member name="M:AuthenticationService.Models.ApplicationDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{AuthenticationService.Models.ApplicationDbContext})">
+            <summary>
+            Initializes a new instance of the ApplicationDbContext with the specified options.
+            </summary>
+            <param name="options">The options to be used by the DbContext.</param>
+        </member>
+        <member name="P:AuthenticationService.Models.ApplicationDbContext.Users">
+            <summary>
+            Collection of users in the system.
+            </summary>
+        </member>
+        <member name="T:AuthenticationService.Models.User">
+            <summary>
+            Represents a user in the authentication service.
+            </summary>
+        </member>
+        <member name="P:AuthenticationService.Models.User.Id">
+            <summary>
+            Unique identifier for the user.
+            </summary>
+        </member>
+        <member name="P:AuthenticationService.Models.User.Email">
+            <summary>
+            User's email address.
+            </summary>
+        </member>
+        <member name="P:AuthenticationService.Models.User.PasswordHash">
+            <summary>
+            Hashed password for the user.
+            </summary>
+        </member>
+        <member name="T:AuthenticationService.Services.AuthService">
+            <summary>
+            Service for handling authentication operations such as login, registration, and JWT token generation.
+            </summary>
+        </member>
+        <member name="M:AuthenticationService.Services.AuthService.#ctor(AuthenticationService.Models.ApplicationDbContext,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Initializes a new instance of the AuthService class.
+            </summary>
+            <param name="context">The database context to be used by this service.</param>
+            <param name="configuration">The configuration properties for the application.</param>
+        </member>
+        <member name="M:AuthenticationService.Services.AuthService.FindByEmailAsync(System.String)">
+            <summary>
+            Finds a user by their email address.
+            </summary>
+            <param name="email">The email address of the user to find.</param>
+            <returns>The user if found; otherwise, null.</returns>
+        </member>
+        <member name="M:AuthenticationService.Services.AuthService.RegisterAsync(AuthenticationService.DTOs.RegisterDTO)">
+            <summary>
+            Registers a new user with the provided registration details.
+            </summary>
+            <param name="registerDto">The registration details including email and password.</param>
+            <returns>The newly created user.</returns>
+        </member>
+        <member name="M:AuthenticationService.Services.AuthService.LoginAsync(AuthenticationService.DTOs.LoginDTO)">
+            <summary>
+            Authenticates a user and generates a JWT token if the login is successful.
+            </summary>
+            <param name="loginDto">The login details including email and password.</param>
+            <returns>A JWT token if authentication is successful; otherwise, null.</returns>
+        </member>
+        <member name="M:AuthenticationService.Services.AuthService.HashPassword(System.String)">
+            <summary>
+            Hashes a password using BCrypt.
+            </summary>
+            <param name="password">The plain text password to hash.</param>
+            <returns>The hashed password.</returns>
+        </member>
+        <member name="M:AuthenticationService.Services.AuthService.VerifyPassword(System.String,System.String)">
+            <summary>
+            Verifies a password against a hashed password.
+            </summary>
+            <param name="hashedPassword">The hashed password.</param>
+            <param name="providedPassword">The plain text password to verify.</param>
+            <returns>True if the password matches the hashed password; otherwise, false.</returns>
+        </member>
+        <member name="M:AuthenticationService.Services.AuthService.GenerateJwtToken(AuthenticationService.Models.User)">
+            <summary>
+            Generates a JWT token for the authenticated user.
+            </summary>
+            <param name="user">The authenticated user.</param>
+            <returns>The generated JWT token.</returns>
+        </member>
+        <member name="T:AuthenticationService.Startup">
+            <summary>
+            Startup class for configuring services and middleware for the authentication service application.
+            </summary>
+        </member>
+        <member name="M:AuthenticationService.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Initializes a new instance of the Startup class.
+            </summary>
+            <param name="configuration">The configuration properties for the application.</param>
+        </member>
+        <member name="P:AuthenticationService.Startup.Configuration">
+            <summary>
+            Gets the configuration properties for the application.
+            </summary>
+        </member>
+        <member name="M:AuthenticationService.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configures the services to add to the container. This method gets called by the runtime.
+            </summary>
+            <param name="services">The collection of services to configure.</param>
+        </member>
+        <member name="M:AuthenticationService.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Configures the HTTP request pipeline. This method gets called by the runtime.
+            </summary>
+            <param name="app">The application builder to configure.</param>
+            <param name="env">The hosting environment information.</param>
+        </member>
+    </members>
+</doc>

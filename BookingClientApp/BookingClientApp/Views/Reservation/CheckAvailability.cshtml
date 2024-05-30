@@ -1,42 +1,42 @@
 @model BookingClientApp.Models.AvailableRoomsViewModel
 
 @{
-    ViewData["Title"] = "Sprawdź dostępność";
+    ViewData["Title"] = "Check Availability";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-@* Formularz do sprawdzania dostępności *@
 <form asp-action="CheckAvailability" method="post">
-    <div class="form-group">
-        <label asp-for="CheckInDate">Data zameldowania</label>
-        <input asp-for="CheckInDate" type="date" class="form-control" />
-        <span asp-validation-for="CheckInDate" class="text-danger"></span>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="CheckInDate">Check-in Date</label>
+            <input asp-for="CheckInDate" type="date" class="form-control" />
+            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="CheckOutDate">Check-out Date</label>
+            <input asp-for="CheckOutDate" type="date" class="form-control" />
+            <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="CheckOutDate">Data wymeldowania</label>
-        <input asp-for="CheckOutDate" type="date" class="form-control" />
-        <span asp-validation-for="CheckOutDate" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Sprawdź dostępność</button>
+    <button type="submit" class="btn btn-primary">Check Availability</button>
 </form>
 
+@if (Model.AvailableRooms != null && Model.AvailableRooms.Any())
+{
+    <form asp-action="MakeReservation" method="post">
+        <input asp-for="CheckInDate" type="hidden" />
+        <input asp-for="CheckOutDate" type="hidden" />
 
-    @if (Model.AvailableRooms != null && Model.AvailableRooms.Any())
-    {
-<form asp-action="MakeReservation" method="post">
-    <input asp-for="CheckInDate" type="hidden" />
-    <input asp-for="CheckOutDate" type="hidden" />
-
-        <h3>Dostępne pokoje</h3>
-        <table class="table">
+        <h3>Available Rooms</h3>
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Zaznacz</th>
-                    <th>Numer pokoju</th>
-                    <th>Typ</th>
-                    <th>Cena za noc</th>
-                    <th>Udogodnienia</th>
+                    <th>Select</th>
+                    <th>Room Number</th>
+                    <th>Type</th>
+                    <th>Price per Night</th>
+                    <th>Amenities</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,16 +55,15 @@
             </tbody>
         </table>
 
-<div class="form-group">
-    <label for="guests">Liczba gości:</label>
-    <input type="number" id="guests" name="Guests" class="form-control" required="required" />
-</div>
-        
-        <button type="submit" class="btn btn-primary">Zarezerwuj</button>
-</form>
-    }
-    else
-    {
-        <p>Brak dostępnych pokoi w wybranym terminie.</p>
-    }
+        <div class="form-group">
+            <label for="guests">Number of Guests:</label>
+            <input type="number" id="guests" name="Guests" class="form-control" required="required" />
+        </div>
 
+        <button type="submit" class="btn btn-primary">Book Now</button>
+    </form>
+}
+else
+{
+    <p>No rooms available for the selected dates.</p>
+}

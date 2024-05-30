@@ -1,0 +1,33 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": ["BookingClientApp.csproj"],
+          "src": "C:\\Users\\Dominik\\source\\repos\\OnlineReservationSystem\\BookingClientApp\\BookingClientApp",
+          "exclude": ["**/obj/**", "**/bin/**"]
+        }
+      ],
+      "dest": "api",
+      "filter": "filterConfig.yml"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+//        "files": ["api/**.yml", "articles/**/*.md", "index.md"],
+        "src": "."
+      }
+    ],
+    "resource": [
+      {
+        "files": ["images/**"],
+        "src": "."
+      }
+    ],
+    "dest": "_site",
+    "template": ["default", "statictoc"],
+    "globalMetadata": {},
+    "fileMetadata": {}
+  }
+}

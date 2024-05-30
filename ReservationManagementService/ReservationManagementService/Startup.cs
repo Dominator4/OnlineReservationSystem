@@ -64,15 +64,6 @@ namespace ReservationManagementService
                     };
                 });
 
-            // Setup CORS policy for the BookingClientApp.
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowBookingClientApp", builder =>
-                    builder.WithOrigins("https://localhost:44300")
-                            .AllowAnyMethod()
-                            .AllowAnyHeader());
-            });
-
             // Register services with dependency injection.
             services.AddScoped<ReservationService>();
         }
@@ -92,7 +83,7 @@ namespace ReservationManagementService
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors("AllowBookingClientApp");
+
 
             // Apply authentication and authorization middleware.
             app.UseAuthentication(); 

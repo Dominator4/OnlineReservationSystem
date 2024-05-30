@@ -1,0 +1,513 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ReservationManagementService</name>
+    </assembly>
+    <members>
+        <member name="T:ReservationManagementService.Controllers.ReservationController">
+            <summary>
+            Controller handling reservation operations such as creating, updating, checking, and cancelling reservations.
+            </summary>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.#ctor(ReservationManagementService.Services.ReservationService)">
+            <summary>
+            Initializes a new instance of the ReservationController class.
+            </summary>
+            <param name="reservationService">The reservation service to be used by this controller.</param>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.CheckUser">
+            <summary>
+            Checks if the user exists in the database based on their identifier.
+            </summary>
+            <returns>Returns the user details if found; otherwise returns NotFound.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.UpdateUser(ReservationManagementService.DTOs.UserDto)">
+            <summary>
+            Updates or creates a user based on the provided user data.
+            </summary>
+            <param name="userDto">The user data transfer object containing the user details.</param>
+            <returns>Returns NoContent on success; BadRequest if the update fails.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.CheckAvailability(ReservationManagementService.Models.AvailabilityRequest)">
+            <summary>
+            Checks room availability based on the provided date range.
+            </summary>
+            <param name="request">The availability request containing check-in and check-out dates.</param>
+            <returns>A list of available rooms.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.MakeReservation(ReservationManagementService.DTOs.CreateReservationDto)">
+            <summary>
+            Creates a reservation based on the provided reservation details.
+            </summary>
+            <param name="createReservationDto">The reservation details to create a new reservation.</param>
+            <returns>A newly created reservation with its details.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.GetReservationById(System.Int32)">
+            <summary>
+            Retrieves a reservation by its ID.
+            </summary>
+            <param name="id">The ID of the reservation to retrieve.</param>
+            <returns>The reservation details if found; otherwise, NotFound.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.GetUserReservations">
+            <summary>
+            Retrieves all reservations made by a specific user.
+            </summary>
+            <returns>A list of user's reservations if any; otherwise, NotFound.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.GetReservationDetails(System.Int32)">
+            <summary>
+            Retrieves detailed information about a specific reservation.
+            </summary>
+            <param name="id">The ID of the reservation to retrieve detailed information for.</param>
+            <returns>Detailed information about the reservation if found; otherwise, NotFound.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.CancelReservation(System.Int32)">
+            <summary>
+            Cancels a reservation if it exists and belongs to the user making the request.
+            </summary>
+            <param name="id">The ID of the reservation to cancel.</param>
+            <returns>Ok if the reservation was successfully canceled; otherwise, NotFound.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Controllers.ReservationController.Get">
+            <summary>
+            A simple method to check if the ReservationService is running.
+            </summary>
+            <returns>A string indicating that the service is started.</returns>
+        </member>
+        <member name="T:ReservationManagementService.DTOs.CreateReservationDto">
+            <summary>
+            DTO for creating a reservation. It includes all necessary details to make a reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.CreateReservationDto.SelectedRoomIds">
+            <summary>
+            List of selected room IDs for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.CreateReservationDto.CustomerId">
+            <summary>
+            Customer ID making the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.CreateReservationDto.CheckInDate">
+            <summary>
+            Check-in date for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.CreateReservationDto.CheckOutDate">
+            <summary>
+            Check-out date for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.CreateReservationDto.Guests">
+            <summary>
+            Number of guests included in the reservation.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.DTOs.DetailReservationDto">
+            <summary>
+            DTO containing detailed information about a reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.DetailReservationDto.ReservedRooms">
+            <summary>
+            List of rooms reserved.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.DetailReservationDto.CheckInDate">
+            <summary>
+            Check-in date for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.DetailReservationDto.CheckOutDate">
+            <summary>
+            Check-out date for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.DetailReservationDto.Guests">
+            <summary>
+            Number of guests in the reservation.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.DTOs.ReservationDto">
+            <summary>
+            General DTO for a reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.ReservationDto.Id">
+            <summary>
+            Unique identifier for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.ReservationDto.RoomIds">
+            <summary>
+            List of room IDs associated with the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.ReservationDto.CustomerId">
+            <summary>
+            Customer ID making the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.ReservationDto.CheckInDate">
+            <summary>
+            Check-in date for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.ReservationDto.CheckOutDate">
+            <summary>
+            Check-out date for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.ReservationDto.Status">
+            <summary>
+            Status of the reservation (e.g., confirmed, pending, canceled).
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.ReservationDto.Guests">
+            <summary>
+            Number of guests included in the reservation.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.DTOs.RoomDto">
+            <summary>
+            DTO representing a room in the reservation system.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.RoomDto.Id">
+            <summary>
+            Unique identifier for the room.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.RoomDto.Number">
+            <summary>
+            Room number assigned to the room.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.RoomDto.Floor">
+            <summary>
+            Floor where the room is located.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.RoomDto.Type">
+            <summary>
+            Type of the room (e.g., single, double, suite).
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.RoomDto.Amenities">
+            <summary>
+            List of amenities available in the room (e.g., WiFi, TV).
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.RoomDto.Price">
+            <summary>
+            Price per night for the room.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.RoomDto.IsAvailable">
+            <summary>
+            Indicates whether the room is currently available.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.DTOs.UserDto">
+            <summary>
+            DTO representing a user in the reservation system.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.UserDto.FirstName">
+            <summary>
+            First name of the user.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.UserDto.LastName">
+            <summary>
+            Last name of the user.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.DTOs.UserDto.PhoneNumber">
+            <summary>
+            Phone number of the user.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.Models.ApplicationDbContext">
+            <summary>
+            Database context for the reservation management system, encapsulating all data access configurations.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.ApplicationDbContext.Rooms">
+            <summary>
+            Collection of rooms available in the system.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.ApplicationDbContext.Reservations">
+            <summary>
+            Collection of reservations made in the system.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.ApplicationDbContext.ReservationRooms">
+            <summary>
+            Collection of links between reservations and rooms.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.ApplicationDbContext.Customers">
+            <summary>
+            Collection of customers in the system.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.Models.AvailabilityRequest">
+            <summary>
+            Model for requesting room availability between specific dates.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.AvailabilityRequest.CheckInDate">
+            <summary>
+            Start date for checking availability.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.AvailabilityRequest.CheckOutDate">
+            <summary>
+            End date for checking availability.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.Models.Customer">
+            <summary>
+            Represents a customer in the reservation management system.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Customer.Id">
+            <summary>
+            Unique identifier for the customer.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Customer.FirstName">
+            <summary>
+            First name of the customer.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Customer.LastName">
+            <summary>
+            Last name of the customer.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Customer.Email">
+            <summary>
+            Email address of the customer.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Customer.PhoneNumber">
+            <summary>
+            Phone number of the customer.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Customer.Reservations">
+            <summary>
+            List of reservations made by the customer.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.Models.Reservation">
+            <summary>
+            Represents a reservation made by a customer.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Reservation.Id">
+            <summary>
+            Unique identifier for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Reservation.CustomerId">
+            <summary>
+            Reference to the customer who made the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Reservation.Customer">
+            <summary>
+            Navigation property for the customer.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Reservation.CheckInDate">
+            <summary>
+            Check-in date for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Reservation.CheckOutDate">
+            <summary>
+            Check-out date for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Reservation.Guests">
+            <summary>
+            Number of guests included in the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Reservation.Status">
+            <summary>
+            Current status of the reservation (e.g., pending, confirmed, cancelled).
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Reservation.ReservationRooms">
+            <summary>
+            Collection of ReservationRoom links detailing the rooms involved in the reservation.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.Models.ReservationRoom">
+            <summary>
+            Represents a link between a reservation and a room, detailing which rooms are involved in specific reservations.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.ReservationRoom.ReservationId">
+            <summary>
+            Identifier for the reservation.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.ReservationRoom.RoomId">
+            <summary>
+            Identifier for the room.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.Models.Room">
+            <summary>
+            Represents a room available for reservation within the system.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Room.Id">
+            <summary>
+            Unique identifier for the room.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Room.Number">
+            <summary>
+            Room number.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Room.Floor">
+            <summary>
+            Floor number where the room is located.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Room.Type">
+            <summary>
+            Type of room (e.g., single, double, suite).
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Room.Amenities">
+            <summary>
+            List of amenities provided in the room.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Room.Price">
+            <summary>
+            Nightly price rate for the room.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Room.IsAvailable">
+            <summary>
+            Indicates whether the room is currently available for booking.
+            </summary>
+        </member>
+        <member name="P:ReservationManagementService.Models.Room.ReservationRooms">
+            <summary>
+            Navigation property indicating the reservations involving this room.
+            </summary>
+        </member>
+        <member name="T:ReservationManagementService.Services.ReservationService">
+            <summary>
+            Provides functionality for managing reservations, users, and checking room availability.
+            </summary>
+        </member>
+        <member name="M:ReservationManagementService.Services.ReservationService.#ctor(ReservationManagementService.Models.ApplicationDbContext)">
+            <summary>
+            Initializes a new instance of the ReservationService with the specified database context.
+            </summary>
+            <param name="context">The database context to be used by this service.</param>
+        </member>
+        <member name="M:ReservationManagementService.Services.ReservationService.GetUser(System.Int32)">
+            <summary>
+            Retrieves a user DTO from the database based on the provided user ID.
+            </summary>
+            <param name="userId">The ID of the user to retrieve.</param>
+            <returns>A UserDto object if found; otherwise, null.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Services.ReservationService.UpdateOrCreateUserAsync(System.Int32,ReservationManagementService.DTOs.UserDto)">
+            <summary>
+            Updates an existing user or creates a new user if the user ID does not exist.
+            </summary>
+            <param name="userId">The ID of the user to update or create.</param>
+            <param name="userDto">The user data transfer object containing the user details.</param>
+            <returns>True if the operation is successful, otherwise false.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Services.ReservationService.CheckAvailability(System.DateTime,System.DateTime)">
+            <summary>
+            Checks the availability of rooms for a given date range.
+            </summary>
+            <param name="checkInDate">The check-in date to consider for availability.</param>
+            <param name="checkOutDate">The check-out date to consider for availability.</param>
+            <returns>A list of available rooms as RoomDto objects.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Services.ReservationService.MakeReservation(ReservationManagementService.DTOs.CreateReservationDto)">
+            <summary>
+            Creates a reservation based on the provided reservation details.
+            </summary>
+            <param name="createReservationDto">The details of the reservation to create.</param>
+            <returns>A ReservationDto object representing the newly created reservation.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Services.ReservationService.GetReservationById(System.Int32)">
+            <summary>
+            Retrieves a reservation by its ID, including related data.
+            </summary>
+            <param name="id">The ID of the reservation to retrieve.</param>
+            <returns>A Reservation object if found; otherwise, null.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Services.ReservationService.GetUserReservations(System.Int32)">
+            <summary>
+            Retrieves all reservations made by a specific user.
+            </summary>
+            <param name="userId">The ID of the user whose reservations are to be retrieved.</param>
+            <returns>A list of ReservationDto objects representing the user's reservations.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Services.ReservationService.GetReservationDetails(System.Int32)">
+            <summary>
+            Retrieves detailed information about a specific reservation.
+            </summary>
+            <param name="reservationId">The ID of the reservation to retrieve details for.</param>
+            <returns>A DetailReservationDto object if found; otherwise, null.</returns>
+        </member>
+        <member name="M:ReservationManagementService.Services.ReservationService.CancelReservation(System.Int32,System.Int32)">
+            <summary>
+            Cancels a reservation if it exists and belongs to the specified user.
+            </summary>
+            <param name="reservationId">The ID of the reservation to cancel.</param>
+            <param name="userId">The ID of the user attempting to cancel the reservation.</param>
+            <returns>True if the reservation is successfully canceled; otherwise, false.</returns>
+        </member>
+        <member name="T:ReservationManagementService.Startup">
+            <summary>
+            Startup class for configuring services and middleware for the application.
+            </summary>
+        </member>
+        <member name="M:ReservationManagementService.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Initializes a new instance of the Startup class.
+            </summary>
+            <param name="configuration">The configuration properties for the application.</param>
+        </member>
+        <member name="P:ReservationManagementService.Startup.Configuration">
+            <summary>
+            Gets the configuration properties for the application.
+            </summary>
+        </member>
+        <member name="M:ReservationManagementService.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configures the services to add to the container. This method gets called by the runtime.
+            </summary>
+            <param name="services">The collection of services to configure.</param>
+        </member>
+        <member name="M:ReservationManagementService.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Configures the HTTP request pipeline. This method gets called by the runtime.
+            </summary>
+            <param name="app">The application builder to configure.</param>
+            <param name="env">The hosting environment information.</param>
+        </member>
+    </members>
+</doc>

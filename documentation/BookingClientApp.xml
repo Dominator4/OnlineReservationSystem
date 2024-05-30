@@ -1,0 +1,401 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BookingClientApp</name>
+    </assembly>
+    <members>
+        <member name="T:BookingClientApp.Controllers.AuthController">
+            <summary>
+            Handles login and registration actions in the BookingClientApp.
+            </summary>
+        </member>
+        <member name="M:BookingClientApp.Controllers.AuthController.#ctor(BookingClientApp.Services.AuthServiceClient)">
+            <summary>
+            Initializes a new instance of the AuthController class.
+            </summary>
+            <param name="authServiceClient">The authentication service client used for login and registration operations.</param>
+        </member>
+        <member name="M:BookingClientApp.Controllers.AuthController.Login">
+            <summary>
+            Displays the login view.
+            </summary>
+            <returns>The login view.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.AuthController.Login(BookingClientApp.Models.LoginViewModel)">
+            <summary>
+            Handles the login process.
+            </summary>
+            <param name="model">The login view model containing the user's email and password.</param>
+            <returns>Redirects to the UserProfile action if successful; otherwise, returns the login view with an error message.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.AuthController.Register">
+            <summary>
+            Displays the registration view.
+            </summary>
+            <returns>The registration view.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.AuthController.Register(BookingClientApp.Models.RegisterViewModel)">
+            <summary>
+            Handles the registration process.
+            </summary>
+            <param name="model">The registration view model containing the user's email, password, and confirm password.</param>
+            <returns>Redirects to the login action if successful; otherwise, returns the registration view with an error message.</returns>
+        </member>
+        <member name="T:BookingClientApp.Controllers.ReservationController">
+            <summary>
+            Handles reservation actions such as checking availability, making reservations, and managing user profiles.
+            </summary>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.#ctor(BookingClientApp.Services.ReservationServiceClient)">
+            <summary>
+            Initializes a new instance of the ReservationController class.
+            </summary>
+            <param name="reservationServiceClient">The reservation service client used for interacting with the reservation service.</param>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.UserProfile">
+            <summary>
+            Displays the user profile.
+            </summary>
+            <returns>The user profile view if the user exists; otherwise, redirects to the CompleteProfile action.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.CompleteProfile">
+            <summary>
+            Displays the complete profile view for updating user information.
+            </summary>
+            <returns>The complete profile view.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.CompleteProfile(BookingClientApp.Models.UserViewModel)">
+            <summary>
+            Handles the complete profile process for updating user information.
+            </summary>
+            <param name="model">The user view model containing user details.</param>
+            <returns>Redirects to the UserProfile action if successful; otherwise, returns the complete profile view with an error message.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.CheckAvailability">
+            <summary>
+            Displays the check availability view.
+            </summary>
+            <returns>The check availability view.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.CheckAvailability(BookingClientApp.Models.AvailableRoomsViewModel)">
+            <summary>
+            Handles the check availability process.
+            </summary>
+            <param name="model">The available rooms view model containing the check-in and check-out dates.</param>
+            <returns>The check availability view with available rooms if successful.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.MakeReservation(BookingClientApp.Models.ReservationViewModel)">
+            <summary>
+            Handles the make reservation process.
+            </summary>
+            <param name="model">The reservation view model containing reservation details.</param>
+            <returns>Redirects to the UserProfile action if successful; otherwise, returns an error view with a message.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.UserReservations">
+            <summary>
+            Displays the user's reservations.
+            </summary>
+            <returns>The user reservations view.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.GetReservationDetails(System.Int32)">
+            <summary>
+            Retrieves the details of a specific reservation.
+            </summary>
+            <param name="id">The reservation ID.</param>
+            <returns>The reservation details view if found; otherwise, returns NotFound.</returns>
+        </member>
+        <member name="M:BookingClientApp.Controllers.ReservationController.CancelReservation(System.Int32)">
+            <summary>
+            Cancels a specific reservation.
+            </summary>
+            <param name="id">The reservation ID.</param>
+            <returns>Redirects to the UserReservations action if successful; otherwise, returns the UserProfile view.</returns>
+        </member>
+        <member name="T:BookingClientApp.Models.AvailableRoomsViewModel">
+            <summary>
+            ViewModel representing available rooms for a given date range.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.AvailableRoomsViewModel.AvailableRooms">
+            <summary>
+            List of available rooms.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.AvailableRoomsViewModel.CheckInDate">
+            <summary>
+            Check-in date for the search.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.AvailableRoomsViewModel.CheckOutDate">
+            <summary>
+            Check-out date for the search.
+            </summary>
+        </member>
+        <member name="T:BookingClientApp.Models.DetailReservationViewModel">
+            <summary>
+            ViewModel representing details of a reservation.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.DetailReservationViewModel.ReservedRooms">
+            <summary>
+            List of rooms reserved.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.DetailReservationViewModel.CheckInDate">
+            <summary>
+            Check-in date for the reservation.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.DetailReservationViewModel.CheckOutDate">
+            <summary>
+            Check-out date for the reservation.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.DetailReservationViewModel.Guests">
+            <summary>
+            Number of guests for the reservation.
+            </summary>
+        </member>
+        <member name="T:BookingClientApp.Models.ErrorViewModel">
+            <summary>
+            ViewModel for handling errors in the application.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.ErrorViewModel.RequestId">
+            <summary>
+            Request ID associated with the error.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.ErrorViewModel.ShowRequestId">
+            <summary>
+            Indicates whether the Request ID should be shown.
+            </summary>
+        </member>
+        <member name="T:BookingClientApp.Models.LoginViewModel">
+            <summary>
+            ViewModel for user login credentials.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.LoginViewModel.Email">
+            <summary>
+            User's email address for login.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.LoginViewModel.Password">
+            <summary>
+            User's password for login.
+            </summary>
+        </member>
+        <member name="T:BookingClientApp.Models.RegisterViewModel">
+            <summary>
+            ViewModel for registering a new user.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.RegisterViewModel.Email">
+            <summary>
+            User's email address for registration.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.RegisterViewModel.Password">
+            <summary>
+            User's password for registration.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.RegisterViewModel.ConfirmPassword">
+            <summary>
+            Confirmation of the user's password.
+            </summary>
+        </member>
+        <member name="T:BookingClientApp.Models.ReservationViewModel">
+            <summary>
+            ViewModel for creating or displaying a reservation.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.ReservationViewModel.Id">
+            <summary>
+            Unique identifier for the reservation.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.ReservationViewModel.SelectedRoomIds">
+            <summary>
+            List of selected room IDs for the reservation.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.ReservationViewModel.CustomerId">
+            <summary>
+            Customer ID making the reservation.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.ReservationViewModel.CheckInDate">
+            <summary>
+            Check-in date for the reservation.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.ReservationViewModel.CheckOutDate">
+            <summary>
+            Check-out date for the reservation.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.ReservationViewModel.Status">
+            <summary>
+            Status of the reservation (e.g., confirmed, pending, canceled).
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.ReservationViewModel.Guests">
+            <summary>
+            Number of guests included in the reservation.
+            </summary>
+        </member>
+        <member name="T:BookingClientApp.Models.Room">
+            <summary>
+            Represents a room available for booking.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.Room.Id">
+            <summary>
+            Unique identifier for the room.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.Room.Number">
+            <summary>
+            Room number.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.Room.Floor">
+            <summary>
+            Floor number where the room is located.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.Room.Type">
+            <summary>
+            Type of the room (e.g., single, double, suite).
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.Room.Amenities">
+            <summary>
+            Comma-separated list of amenities in the room.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.Room.Price">
+            <summary>
+            Price per night for the room.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.Room.IsAvailable">
+            <summary>
+            Indicates whether the room is currently available.
+            </summary>
+        </member>
+        <member name="T:BookingClientApp.Models.UserViewModel">
+            <summary>
+            ViewModel representing user details.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.UserViewModel.FirstName">
+            <summary>
+            User's first name.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.UserViewModel.LastName">
+            <summary>
+            User's last name.
+            </summary>
+        </member>
+        <member name="P:BookingClientApp.Models.UserViewModel.PhoneNumber">
+            <summary>
+            User's phone number.
+            </summary>
+        </member>
+        <member name="T:BookingClientApp.Services.AuthServiceClient">
+            <summary>
+            Handles communication with the AuthenticationService for login and registration operations.
+            </summary>
+        </member>
+        <member name="M:BookingClientApp.Services.AuthServiceClient.#ctor(System.Net.Http.HttpClient)">
+            <summary>
+            Initializes a new instance of the AuthServiceClient class.
+            </summary>
+            <param name="client">The HTTP client used for making requests.</param>
+        </member>
+        <member name="M:BookingClientApp.Services.AuthServiceClient.RegisterAsync(BookingClientApp.Models.RegisterViewModel)">
+            <summary>
+            Registers a new user with the provided registration details.
+            </summary>
+            <param name="model">The registration details including email, password, and confirmation password.</param>
+            <returns>Returns a success message if the registration is successful; otherwise, returns null.</returns>
+        </member>
+        <member name="M:BookingClientApp.Services.AuthServiceClient.LoginAsync(BookingClientApp.Models.LoginViewModel)">
+            <summary>
+            Authenticates a user with the provided login details.
+            </summary>
+            <param name="model">The login details including email and password.</param>
+            <returns>Returns a JWT token if the login is successful; otherwise, returns null.</returns>
+        </member>
+        <member name="T:BookingClientApp.Services.ReservationServiceClient">
+            <summary>
+            Handles communication with the ReservationService for operations such as retrieving, creating, and updating reservations.
+            </summary>
+        </member>
+        <member name="M:BookingClientApp.Services.ReservationServiceClient.#ctor(System.Net.Http.HttpClient,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Initializes a new instance of the ReservationServiceClient class.
+            </summary>
+            <param name="httpClient">The HTTP client used for making requests.</param>
+            <param name="httpContextAccessor">The HTTP context accessor used for retrieving the current HTTP context.</param>
+        </member>
+        <member name="M:BookingClientApp.Services.ReservationServiceClient.GetBearerToken">
+            <summary>
+            Retrieves the bearer token from the HTTP context cookies.
+            </summary>
+            <returns>The bearer token if found; otherwise, null.</returns>
+        </member>
+        <member name="M:BookingClientApp.Services.ReservationServiceClient.GetUser">
+            <summary>
+            Retrieves the user information from the reservation service.
+            </summary>
+            <returns>The user information if the request is successful; otherwise, null.</returns>
+        </member>
+        <member name="M:BookingClientApp.Services.ReservationServiceClient.UpdateUser(BookingClientApp.Models.UserViewModel)">
+            <summary>
+            Updates the user information in the reservation service.
+            </summary>
+            <param name="model">The user information to update.</param>
+            <returns>True if the update is successful; otherwise, false.</returns>
+        </member>
+        <member name="M:BookingClientApp.Services.ReservationServiceClient.GetAvailableRooms(System.DateTime,System.DateTime)">
+            <summary>
+            Retrieves a list of available rooms for the given date range.
+            </summary>
+            <param name="checkIn">The check-in date.</param>
+            <param name="checkOut">The check-out date.</param>
+            <returns>A list of available rooms.</returns>
+        </member>
+        <member name="M:BookingClientApp.Services.ReservationServiceClient.MakeReservation(BookingClientApp.Models.ReservationViewModel)">
+            <summary>
+            Creates a new reservation with the provided reservation details.
+            </summary>
+            <param name="model">The reservation details.</param>
+            <returns>The HTTP response message from the reservation service.</returns>
+        </member>
+        <member name="M:BookingClientApp.Services.ReservationServiceClient.GetUserReservations">
+            <summary>
+            Retrieves the list of reservations made by the user.
+            </summary>
+            <returns>A list of the user's reservations.</returns>
+        </member>
+        <member name="M:BookingClientApp.Services.ReservationServiceClient.GetReservationDetails(System.Int32)">
+            <summary>
+            Retrieves the details of a specific reservation.
+            </summary>
+            <param name="id">The reservation ID.</param>
+            <returns>The reservation details if found; otherwise, null.</returns>
+        </member>
+        <member name="M:BookingClientApp.Services.ReservationServiceClient.CancelReservation(System.Int32)">
+            <summary>
+            Cancels a specific reservation.
+            </summary>
+            <param name="id">The reservation ID.</param>
+            <returns>True if the cancellation is successful; otherwise, false.</returns>
+        </member>
+    </members>
+</doc>

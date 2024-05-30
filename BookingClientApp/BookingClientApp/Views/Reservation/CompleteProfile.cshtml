@@ -1,17 +1,22 @@
 @model BookingClientApp.Models.UserViewModel
 
+<h2>Complete Your Profile</h2>
+
 <form asp-action="CompleteProfile" method="post">
-    <div>
-        <label asp-for="FirstName">Imię</label>
-        <input asp-for="FirstName"/>
+    <div class="form-group">
+        <label asp-for="FirstName">First Name</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
-    <div>
-        <label asp-for="LastName">Nazwisko</label>
-        <input asp-for="LastName"/>
+    <div class="form-group">
+        <label asp-for="LastName">Last Name</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
-    <div>
-        <label asp-for="PhoneNumber">Numer telefonu</label>
-        <input asp-for="PhoneNumber"/>
+    <div class="form-group">
+        <label asp-for="PhoneNumber">Phone Number</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
-    <button type="submit">Zaktualizuj profil</button>
+    <button type="submit" class="btn btn-primary">Update Profile</button>
 </form>

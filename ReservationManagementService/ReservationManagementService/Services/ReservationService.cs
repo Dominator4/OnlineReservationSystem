@@ -66,7 +66,7 @@ namespace ReservationManagementService.Services
                     FirstName = userDto.FirstName,
                     LastName = userDto.LastName,
                     PhoneNumber = userDto.PhoneNumber,
-                    Email = "example@example.com", // Placeholder email; consider updating based on requirements
+                    Email = "example@example.com", //todo: Placeholder email; consider updating based on requirements
                 };
                 _context.Customers.Add(user);
             }
@@ -207,7 +207,7 @@ namespace ReservationManagementService.Services
 
             if (reservation == null)
             {
-                return null; // Or throw an exception if preferred
+                return null;
             }
 
             var detailReservationDto = new DetailReservationDto

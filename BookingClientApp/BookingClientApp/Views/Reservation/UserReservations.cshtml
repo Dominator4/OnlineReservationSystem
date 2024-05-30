@@ -1,16 +1,32 @@
 @model IEnumerable<BookingClientApp.Models.ReservationViewModel>
 
-<h2>Twoje rezerwacje</h2>
+<h2>Your Reservations</h2>
 
-@foreach (var reservation in Model)
-{
-    <div>
-        <p>@reservation.CheckInDate.ToShortDateString() - @reservation.CheckOutDate.ToShortDateString()</p>
-        <a href="@Url.Action("GetReservationDetails", "Reservation", new { id = reservation.Id })">Szczegóły</a>
-        <!-- Dodaj przycisk anulowania dla każdej rezerwacji -->
-        <form action="@Url.Action("CancelReservation", "Reservation")" method="post">
-            <input type="hidden" name="id" value="@reservation.Id" />
-            <button type="submit" class="btn btn-danger">Anuluj rezerwację</button>
-        </form>
-    </div>
-}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Details</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var reservation in Model)
+    {
+        <tr>
+            <td>@reservation.CheckInDate.ToShortDateString()</td>
+            <td>@reservation.CheckOutDate.ToShortDateString()</td>
+            <td>
+                <a class="btn btn-info" href="@Url.Action("GetReservationDetails", "Reservation", new { id = reservation.Id })">Details</a>
+            </td>
+            <td>
+                <form action="@Url.Action("CancelReservation", "Reservation")" method="post">
+                    <input type="hidden" name="id" value="@reservation.Id" />
+                    <button type="submit" class="btn btn-danger">Cancel</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
