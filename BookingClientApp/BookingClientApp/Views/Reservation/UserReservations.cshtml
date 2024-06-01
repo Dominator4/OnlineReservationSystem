@@ -1,5 +1,9 @@
 @model IEnumerable<BookingClientApp.Models.ReservationViewModel>
 
+@{
+    ViewData["Title"] = "Reservations";
+}
+
 <h2>Your Reservations</h2>
 
 <table class="table table-striped">
@@ -12,21 +16,21 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var reservation in Model)
-    {
-        <tr>
-            <td>@reservation.CheckInDate.ToShortDateString()</td>
-            <td>@reservation.CheckOutDate.ToShortDateString()</td>
-            <td>
-                <a class="btn btn-info" href="@Url.Action("GetReservationDetails", "Reservation", new { id = reservation.Id })">Details</a>
-            </td>
-            <td>
-                <form action="@Url.Action("CancelReservation", "Reservation")" method="post">
-                    <input type="hidden" name="id" value="@reservation.Id" />
-                    <button type="submit" class="btn btn-danger">Cancel</button>
-                </form>
-            </td>
-        </tr>
-    }
+        @foreach (var reservation in Model)
+        {
+            <tr>
+                <td>@reservation.CheckInDate.ToShortDateString()</td>
+                <td>@reservation.CheckOutDate.ToShortDateString()</td>
+                <td>
+                    <a class="btn btn-info" href="@Url.Action("GetReservationDetails", "Reservation", new { id = reservation.Id })">Details</a>
+                </td>
+                <td>
+                    <form action="@Url.Action("CancelReservation", "Reservation")" method="post">
+                        <input type="hidden" name="id" value="@reservation.Id" />
+                        <button type="submit" class="btn btn-danger">Cancel</button>
+                    </form>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

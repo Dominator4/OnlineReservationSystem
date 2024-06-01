@@ -1,5 +1,9 @@
 @model BookingClientApp.Models.UserViewModel
 
+@{
+    ViewData["Title"] = "Update Profile";
+}
+
 <h2>Complete Your Profile</h2>
 
 <form asp-action="CompleteProfile" method="post">
@@ -16,7 +20,7 @@
     <div class="form-group">
         <label asp-for="PhoneNumber">Phone Number</label>
         <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        <span asp-validation-for="PhoneNumber" type="tel" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Update Profile</button>
 </form>

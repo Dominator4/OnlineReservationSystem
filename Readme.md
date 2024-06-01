@@ -37,8 +37,8 @@ Before setting up and running the applications, ensure you have the following in
 
 1. **Clone the Repository**:
     ```sh
-    git clone https://github.com/your-repo/AuthenticationService.git
-    cd AuthenticationService
+    git clone https://github.com/Dominator4/OnlineReservationSystem.git
+    cd OnlineReservationSystem\AuthenticationService
     ```
 
 2. **Configure the Database**:
@@ -55,9 +55,9 @@ Before setting up and running the applications, ensure you have the following in
         },
         "AllowedHosts": "*",
         "Jwt": {
-          "Key": "bardzotajnykluczsekretny123456789",
-          "Issuer": "TwojWydawca",
-          "Audience": "TwojaAudiencja"
+          "Key": "SuperSecretKey123456789",
+          "Issuer": "YourIssuer",
+          "Audience": "YourAudience"
         },
         "ConnectionStrings": {
           "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=AuthDb;Trusted_Connection=True;"
@@ -80,8 +80,8 @@ Before setting up and running the applications, ensure you have the following in
 
 1. **Clone the Repository**:
     ```sh
-    git clone https://github.com/your-repo/ReservationManagementService.git
-    cd ReservationManagementService
+    git clone https://github.com/Dominator4/OnlineReservationSystem.git
+    cd OnlineReservationSystem\ReservationManagementService
     ```
 
 2. **Configure the Database**:
@@ -118,8 +118,8 @@ Before setting up and running the applications, ensure you have the following in
 
 1. **Clone the Repository**:
     ```sh
-    git clone https://github.com/your-repo/BookingClientApp.git
-    cd BookingClientApp
+    git clone https://github.com/Dominator4/OnlineReservationSystem.git
+    cd OnlineReservationSystem\BookingClientApp
     ```
 
 2. **Configure the Database**:
@@ -205,9 +205,9 @@ Ensure all applications are running concurrently.
   },
   "AllowedHosts": "*",
   "Jwt": {
-    "Key": "bardzotajnykluczsekretny123456789",
-    "Issuer": "TwojWydawca",
-    "Audience": "TwojaAudiencja"
+	"Key": "SuperSecretKey123456789",
+	"Issuer": "YourIssuer",
+	"Audience": "YourAudience"
   },
   "ConnectionStrings": {
     "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=AuthDb;Trusted_Connection=True;"

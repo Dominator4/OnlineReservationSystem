@@ -1,5 +1,9 @@
 @model BookingClientApp.Models.DetailReservationViewModel
 
+@{
+    ViewData["Title"] = "Details";
+}
+
 <h2>Reservation Details</h2>
 
 <p>Check-in: @Model.CheckInDate.ToShortDateString()</p>
@@ -8,8 +12,8 @@
 
 <h3>Rooms:</h3>
 <ul class="list-group">
-@foreach (var room in Model.ReservedRooms)
-{
-    <li class="list-group-item">Room: @room.Number, Floor: @room.Floor, Type: @room.Type</li>
-}
+    @foreach (var room in Model.ReservedRooms)
+    {
+        <li class="list-group-item">Room: @room.Number, Floor: @room.Floor, Type: @room.Type</li>
+    }
 </ul>

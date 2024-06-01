@@ -41,6 +41,12 @@
             <param name="model">The registration view model containing the user's email, password, and confirm password.</param>
             <returns>Redirects to the login action if successful; otherwise, returns the registration view with an error message.</returns>
         </member>
+        <member name="M:BookingClientApp.Controllers.AuthController.Logout">
+            <summary>
+            Handles the logout process.
+            </summary>
+            <returns>Redirects to the login action.</returns>
+        </member>
         <member name="T:BookingClientApp.Controllers.ReservationController">
             <summary>
             Handles reservation actions such as checking availability, making reservations, and managing user profiles.
