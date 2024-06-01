@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingClientApp.Models
 {
@@ -10,11 +11,14 @@ namespace BookingClientApp.Models
         /// <summary>
         /// User's email address for login.
         /// </summary>
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         /// <summary>
         /// User's password for login.
         /// </summary>
+        [Required]
         public string Password { get; set; }
     }
 }

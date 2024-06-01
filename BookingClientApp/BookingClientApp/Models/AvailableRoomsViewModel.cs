@@ -8,6 +8,11 @@ namespace BookingClientApp.Models
     /// </summary>
     public class AvailableRoomsViewModel
     {
+        public AvailableRoomsViewModel()
+        {
+            CheckInDate = DateTime.Today;
+            CheckOutDate = CheckInDate.AddDays(1);
+        }
         /// <summary>
         /// List of available rooms.
         /// </summary>

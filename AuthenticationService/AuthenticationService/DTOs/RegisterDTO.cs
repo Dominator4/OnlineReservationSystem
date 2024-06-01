@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AuthenticationService.DTOs
+﻿namespace AuthenticationService.DTOs
 {
     /// <summary>
     /// Data Transfer Object for user registration. Contains the necessary information to register a new user.

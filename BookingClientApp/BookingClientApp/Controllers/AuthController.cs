@@ -100,5 +100,21 @@ namespace BookingClientApp.Controllers
             ModelState.AddModelError("", "Registration attempt failed");
             return View(model);
         }
+
+
+/// <summary>
+/// Handles the logout process.
+/// </summary>
+/// <returns>Redirects to the login action.</returns>
+[HttpPost]
+public IActionResult Logout()
+{
+    Response.Cookies.Delete("AuthToken", new CookieOptions { HttpOnly = true, Secure = true });
+
+    return RedirectToAction("Login", "Auth");
+}
+
+
+
     }
 }

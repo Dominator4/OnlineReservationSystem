@@ -90,7 +90,7 @@ namespace BookingClientApp.Controllers
         [HttpGet]
         public IActionResult CheckAvailability()
         {
-            return View(new AvailableRoomsViewModel());
+            return CheckAvailability(new AvailableRoomsViewModel()).Result;
         }
 
         /// <summary>
